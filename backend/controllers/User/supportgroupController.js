@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const SupportGroup = require("../../models/Groups/supportgroupmodel");
+const SupportGroup = require("../../models/User/supportgroupmodel");
 
 // Get list of support group sessions
 const getSupportGroupSessions = asyncHandler(async (req, res) => {

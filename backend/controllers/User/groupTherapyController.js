@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const GroupTherapy = require("../../models/Groups/grouptherapymodel.js");  
+const GroupTherapy = require("../../models/User/grouptherapymodel");  
 
 // Get list of group therapy sessions
 
