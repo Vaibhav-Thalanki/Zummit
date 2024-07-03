@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import useFetch from "../utils/fetchData";
-import { checkToken } from "../utils/checkToken";
+
+import { checkToken } from "../utils/Hooks/checkToken.js";
 import LoginReq_pop from "./PopUps/LoginReq_pop.js";
-import { addCouncellor } from "../utils/bookingSlice";
+import { addCouncellor } from "../utils/Slices/bookingSlice.js";
+import useFetch from "../utils/Hooks/fetchData.js";
 
 const Therapists = () => {
   const [allTherapists, setAllTherapists] = useState([]);
@@ -21,12 +22,11 @@ const Therapists = () => {
   const { data, loading, error } = useFetch(url);
 
   useEffect(() => {
-    console.log(data);
     setAllTherapists(data);
   }, [data]);
 
   const user = useSelector((store) => store.user.data);
-
+  
   const handleSearchInput = (event) => {
     if (event.key == "Enter") {
       setSearchInput(event.target.value);

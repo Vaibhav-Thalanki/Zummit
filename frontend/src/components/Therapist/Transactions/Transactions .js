@@ -4,15 +4,10 @@ import axios from "axios";
 const Transactions = () => {
   const [transactions, setTransactions] = useState([])
   useEffect(() => {
-    axios
-      .post("https://zummit-chandan.onrender.com/api/admin/transactions", {
-        input: "Dom@gmail.com",
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWFiOGNjNDQ1MmIxM2Q1MGJmYTYzNCIsImlhdCI6MTcxNzIyMTU4MCwiZXhwIjoxNzE5ODEzNTgwfQ.ZKxsQmALrx7CpkOpNzA1i1Ub1exmI9ghmsdY9bQVzuI",
-      })
-      .then((response) => {
+    axios.get('https://zummit-chandan.onrender.com/api/therapist/gettherapistTransactionLists')
+      .then((response) => { 
         if (response.data.success) {
-          setTransactions(response.data.transaction);
+          setTransactions(response.data.therapistTransactionData);
         } else {
           console.error("Failed to fetch appointments");
         }
@@ -23,6 +18,7 @@ const Transactions = () => {
   }, []);
   const cancelledStyle = { color: "#B00202" };
   const completedStyle = { color: "#02B04A" };
+  console.log(transactions);
 
   const getStyle = (report) => {
     switch (report) {
