@@ -1,14 +1,9 @@
 const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Therapist = require("../../../models/Therapist/therapistModel");
 const Admin = require("../../../models/Admin/AdminRegisterLogin/adminModel");
+const generateToken = require("../../../utils/generateToken")
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-};
 
 
 const createTherapist = asyncHandler(async (req, res) => {
@@ -97,36 +92,9 @@ const logoutTherapist = asyncHandler(async (req, res) => {
   });
 });
 
-const getTherapist = asyncHandler(async (req, res) => {
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res
-      .status(401)
-      .json({ success: false, msg: "No token provided, authorization denied" });
-  }
-
-  try {
-    const therapist = await Therapist.find({}).select("-password");
-    if (!therapist) {
-      return res
-        .status(404)
-        .json({ success: false, msg: "Therapists not found" });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: therapist,
-      msg: "Therapists found"
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Server error" });
-  }
-});
 
 module.exports = {
   createTherapist,
   logoutTherapist,
-  getTherapist,
+
 };

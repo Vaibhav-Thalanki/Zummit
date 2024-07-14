@@ -3,6 +3,7 @@ import { addUser } from "../../../utils/Slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { BASE_ADMIN } from "../../../utils/constants";
 
 //main component toh yaha hey
 const SignUp = () => {
@@ -27,9 +28,6 @@ const SignUp = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-
-
-
   const registerAdmin = async (userData) => {
     console.log(userData);
     // Check if OTP and verifyOTP are equal
@@ -40,7 +38,7 @@ const SignUp = () => {
 
     try {
       const response = await fetch(
-        "https://zummit-chandan.onrender.com/api/admin/adminRegister",
+        BASE_ADMIN+"/adminRegister",
         {
           method: "POST",
           headers: {
@@ -63,7 +61,7 @@ const SignUp = () => {
 
       //reload kee baad bhi data remain constant
       localStorage.setItem("token", data.token);
-      navigate("/userdashboard");
+      navigate("/user-dashboard");
     } catch (error) {
       console.error("Error:", error);
     }
@@ -72,7 +70,7 @@ const SignUp = () => {
   const loginUser = async (loginData) => {
     try {
       const response = await fetch(
-        "https://zummit-chandan.onrender.com/api/admin/adminRegister",
+        BASE_ADMIN+"/adminRegister",
         {
           method: "POST",
           headers: {
@@ -91,7 +89,7 @@ const SignUp = () => {
       const data = await response.json();
       console.log(data);
       dispatch(addUser(data.newUser));
-      navigate("/userdashboard");
+      navigate("/user-dashboard");
       console.log(response);
 
       //jaao token leke aao
@@ -106,44 +104,7 @@ const SignUp = () => {
     }
   };
 
-  const TherapistLogin = async (loginData) => {
-    try {
-      const response = await fetch(
-        "http://localhost:4000/api/therapist/loginTherapist",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginData),
-          credentials: "include", // Changed from 'true' to 'include' for clarity
-          withCredentials: true,
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await response.json();
-
-      dispatch(addUser(data));
-      navigate("/therapist-home");
-      console.log(response);
-
-      //reload kee baad bhi data remain constant
-      localStorage.setItem("token", data.token);
-
-      //jaao token leke aao
-      const token = response["Authorization"];
-      if (!token) {
-        throw new Error("Token not found in response headers");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
+ 
   //token check karo reload kee baad
   const checkForToken = () => {
     const token = localStorage.getItem("token");
@@ -304,7 +265,7 @@ const SignUp = () => {
                   type={isPasswordVisible ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder="Enter Your Password"
                   className="w-[90%] p-2 bg-cyan-100 rounded-md outline-none"
                 />
                 <span
@@ -349,10 +310,23 @@ const SignUp = () => {
                   )}
                 </span>
               </div>
+              <div className="flex rounded-md items-center bg-cyan-100">
+                <input
+                  type={isPasswordVisible ? "text" : "password"}
+                  value={reEnterPassword}
+                  onChange={(e) => setReEnterPassword(e.target.value)}
+                  placeholder="Re-Enter Your Password"
+                  className="w-[90%] p-2 bg-cyan-100 rounded-md outline-none"
+                />
+                <span
+                  onClick={togglePasswordVisibility}
+                  className="password-toggle-icon"
+                ></span>
+              </div>
               <p className="m-0 p-0 text-red-600"> {error} </p>
-              <input
+              {/* <input
                 className="w-[90%] file:cursor-pointer py-2 file:mr-5 focus:outline-none rounded-xl  file:rounded-lg file:text-base file:border-none file:font-semibold file:bg-yellow file:text-green-500 file:px-4 file:py-2"
-                type="file"/>
+                type="file"/> */}
               <button
                 onClick={handleSubmission}
                 className="w-[40%] rounded-lg bg-yellow p-2 text-green-500"
