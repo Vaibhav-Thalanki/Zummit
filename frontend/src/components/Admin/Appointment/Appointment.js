@@ -3,7 +3,7 @@ import axios from "axios";
 import BellIcon from "../../images/SVG_files/BellIcon.svg";
 import SearchBar from "../../images/SVG_files/SearchBar.svg";
 import { BASE_ADMIN } from "../../../utils/constants";
-
+import { useNavigate } from 'react-router-dom'
 
 const Appointment = () => {
   const [appointmentsList, setAppointmentsList] = useState([]);
@@ -12,7 +12,7 @@ const Appointment = () => {
 
   useEffect(() => {
     axios
-      .post(BASE_ADMIN+"/appointmentslist", {
+      .post(BASE_ADMIN + "/appointmentslist", {
         input: "akib@gmail.com",
         token:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWEwNGRiMTk3Mzk4MTgwNzAwZDZjNCIsImlhdCI6MTcxNzE3NTUxNiwiZXhwIjoxNzE5NzY3NTE2fQ.nT9mK7G3tCQlHfhpFBC-iefz4XkGdBIP8BUNN9tOoUQ",
@@ -28,6 +28,14 @@ const Appointment = () => {
         console.error("Error fetching appointments:", error);
       });
   }, []);
+
+  const navigate = useNavigate()
+
+  const logout = () => {
+    localStorage.clear("adminToken");
+    navigate('/admin-login')
+
+  }
 
   const cancelledStyle = { color: "#B00202" };
   const completedStyle = { color: "#02B04A" };
@@ -76,9 +84,11 @@ const Appointment = () => {
   return (
     <div className="w-full m-10 ">
       {/* Search Bar */}
-      <div className="flex w-[95%] justify-end gap-10 items-center">
+      <div className="flex w-[95%] justify-between gap-10 items-center">
         <div className="flex items-center bg-white w-[80%]   pl-4 rounded-lg -[#B4F0FF] ">
-         <img src={SearchBar} alt="SearchBar"/>
+          <img src={SearchBar} alt="SearchBar" />
+
+          <img src={SearchBar} alt="SearchBar" />
 
           <input
             type="text"
@@ -89,6 +99,7 @@ const Appointment = () => {
         <div className="p-2 cursor-pointer rounded-full ">
           <img src={BellIcon} alt=" BellIcon " />
         </div>
+        <button onClick={logout} className="bg-[#0190B1] px-4 py-2 rounded-md text-white">Logout</button>
       </div>
       {/* heading */}
       <div className="w-[95%] flex justify-between items-center text-2xl my-8">

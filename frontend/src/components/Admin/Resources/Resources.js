@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Main_Dashboard_img from "../../images/Main_Dashboard_img.png";
 import BellIcon from "../../images/SVG_files/BellIcon.svg";
 import SearchBar from "../../images/SVG_files/SearchBar.svg"
 import { BASE_ADMIN } from "../../../utils/constants";
+import { useNavigate } from "react-router-dom";
 
 const Resources = () => {
   const [addedReview, setAddedReview] = useState([])
 
   useEffect(() => {
     axios
-      .post(BASE_ADMIN+"/resources", {
+      .post(BASE_ADMIN + "/resources", {
         input: "Dom@gmail.com",
         token:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWFiOGNjNDQ1MmIxM2Q1MGJmYTYzNCIsImlhdCI6MTcxNzIyMTU4MCwiZXhwIjoxNzE5ODEzNTgwfQ.ZKxsQmALrx7CpkOpNzA1i1Ub1exmI9ghmsdY9bQVzuI",
@@ -26,6 +26,13 @@ const Resources = () => {
         console.error("Error fetching appointments:", error);
       });
   }, []);
+  const navigate = useNavigate()
+
+  const logout = () => {
+    localStorage.clear("adminToken");
+    navigate('/admin-login')
+
+  }
 
   const pendingStyle = { color: "#FED365" };
   const publishedStyle = { color: "#02B04A" };
@@ -81,8 +88,10 @@ const Resources = () => {
   );
   return (
     <div className="w-full m-10 ">
-      <div className="flex justify-center gap-10 items-center">
-        <div className="flex items-center bg-white w-[70%] border  pl-4 rounded-lg border-[#B4F0FF] ">
+      <div className="flex justify-between gap-10 items-center">
+        <div className="flex items-center bg-white w-[80%] border  pl-4 rounded-lg border-[#B4F0FF] ">
+          <img src={SearchBar} alt="SearchBar" />
+
          <img src={SearchBar} alt="SearchBar"/>
 
           <input
@@ -92,8 +101,9 @@ const Resources = () => {
           />
         </div>
         <div className="p-2 rounded-full ">
-           <img src={BellIcon} alt=" BellIcon " />
+          <img src={BellIcon} alt=" BellIcon " />
         </div>
+        <button onClick={logout} className="bg-[#0190B1] px-4 py-2 rounded-md text-white">Logout</button>
       </div>
       <div className="flex w-[90%] justify-between items-center">
         <h1 className="text-2xl  my-8">Groups</h1>
