@@ -3,7 +3,7 @@ import { addUser } from "../../../utils/Slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { BASE_ADMIN } from "../../../utils/constants";
+import { AROUND_WITH_US_GIF, BASE_ADMIN } from "../../../utils/constants";
 
 //main component toh yaha hey
 const NewAdmin = () => {
@@ -39,18 +39,15 @@ const NewAdmin = () => {
     }
 
     try {
-      const response = await fetch(
-        BASE_ADMIN+"/adminRegister",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-          credentials: "include", // Changed from 'true' to 'include' for clarity
-          withCredentials: true,
-        }
-      );
+      const response = await fetch(BASE_ADMIN + "/adminRegister", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+        credentials: "include", // Changed from 'true' to 'include' for clarity
+        withCredentials: true,
+      });
 
       if (!response.ok) {
         throw new Error("Registration failed");
@@ -71,18 +68,15 @@ const NewAdmin = () => {
 
   const loginUser = async (loginData) => {
     try {
-      const response = await fetch(
-        BASE_ADMIN+"/adminRegister",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginData),
-          credentials: "include", // Changed from 'true' to 'include' for clarity
-          withCredentials: true,
-        }
-      );
+      const response = await fetch(BASE_ADMIN + "/adminRegister", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+        credentials: "include", // Changed from 'true' to 'include' for clarity
+        withCredentials: true,
+      });
 
       if (!response.ok) {
         throw new Error("Login failed");
@@ -105,8 +99,6 @@ const NewAdmin = () => {
       console.error("Error:", error);
     }
   };
-
- 
 
   //token check karo reload kee baad
   const checkForToken = () => {
@@ -234,17 +226,19 @@ const NewAdmin = () => {
         onSubmit={async (e) => {
           await handleSubmit(e);
         }}
-        className="flex justify-center m-10 mt-20 w-full"
+        className="flex justify-center m-10 mt-14 w-[90%]"
       >
         {/* Left Container */}
-        <div className="w-[35%]">
+        <div className="w-[40%]">
           {showOTP && (
             <div className="bg-cyan-600 text-white text-center font-semibold p-4 animate-bounce rounded-xl">
               <h1>Your OTP is {OTP} </h1>
             </div>
           )}
           <div className="flex flex-col gap-5 shadow-lg rounded-lg  bg-white p-5">
-            <p className="text-center text-2xl mb-5 font-medium">Create Admin Account</p>
+            <p className="text-center text-2xl mb-5 font-medium">
+              Create Admin Account
+            </p>
             {/* <div className="font-semibold text-xl">
               <p>Admin</p>
             </div> */}

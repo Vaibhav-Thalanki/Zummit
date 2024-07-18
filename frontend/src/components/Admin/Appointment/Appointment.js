@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BellIcon from "../../images/SVG_files/BellIcon.svg";
-import SearchBar from "../../images/SVG_files/SearchBar.svg";
 import { BASE_ADMIN } from "../../../utils/constants";
-import { useNavigate } from 'react-router-dom'
+import SortIcon from "../../images/SVG_files/Sort_Icon.svg";
+import DownAngleIcon from "../../images/SVG_files/Down_Angle_White.svg";
+import AdminSearchBar from "../AdminSearchBar";
 
 const Appointment = () => {
   const [appointmentsList, setAppointmentsList] = useState([]);
@@ -11,15 +11,25 @@ const Appointment = () => {
   const [selectedSort, setSelectedSort] = useState("");
 
   useEffect(() => {
+
+    const token = localStorage.getItem("adminToken");
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+    
     axios
-      .post(BASE_ADMIN + "/appointmentslist", {
-        input: "akib@gmail.com",
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWEwNGRiMTk3Mzk4MTgwNzAwZDZjNCIsImlhdCI6MTcxNzE3NTUxNiwiZXhwIjoxNzE5NzY3NTE2fQ.nT9mK7G3tCQlHfhpFBC-iefz4XkGdBIP8BUNN9tOoUQ",
-      })
+      .get(BASE_ADMIN + "/appointmentslist", config)
       .then((response) => {
         if (response.data.success) {
           setAppointmentsList(response.data.adminAppointmentList);
+          console.log(response.data.adminAppointmentList);
         } else {
           console.error("Failed to fetch appointments");
         }
@@ -28,14 +38,6 @@ const Appointment = () => {
         console.error("Error fetching appointments:", error);
       });
   }, []);
-
-  const navigate = useNavigate()
-
-  const logout = () => {
-    localStorage.clear("adminToken");
-    navigate('/admin-login')
-
-  }
 
   const cancelledStyle = { color: "#B00202" };
   const completedStyle = { color: "#02B04A" };
@@ -82,144 +84,57 @@ const Appointment = () => {
     setSelectedSort(selected);
   };
   return (
-    <div className="w-full m-10 ">
-      {/* Search Bar */}
-      <div className="flex w-[95%] justify-between gap-10 items-center">
-        <div className="flex items-center bg-white w-[80%]   pl-4 rounded-lg -[#B4F0FF] ">
-          <img src={SearchBar} alt="SearchBar" />
-
-          <img src={SearchBar} alt="SearchBar" />
-
-          <input
-            type="text"
-            placeholder="Search"
-            className="h-12 ml-5 rounded-lg outline-none w-[100%]"
-          />
-        </div>
-        <div className="p-2 cursor-pointer rounded-full ">
-          <img src={BellIcon} alt=" BellIcon " />
-        </div>
-        <button onClick={logout} className="bg-[#0190B1] px-4 py-2 rounded-md text-white">Logout</button>
-      </div>
-      {/* heading */}
+    <div>
+      <AdminSearchBar/>
       <div className="w-[95%] flex justify-between items-center text-2xl my-8">
         <h1>Appointments</h1>
         <div className="relative text-white cursor-pointer bg-[#0190B1] w-[7rem] p-1 text-center  rounded-md text-base ">
           <div
-            className={`flex ${showSort && "border-b"
-              } border-white justify-center items-center gap-2 py-1 text-center`}
+            onClick={BtnHandler}
+            className={`flex ${
+              showSort && "border-b"
+            } border-white justify-center items-center gap-2 py-1 text-center select-none`}
           >
             <h1>Sort</h1>
             {showSort ? (
-              <svg
-                width="23"
-                height="23"
-                viewBox="0 0 23 23"
-                onClick={BtnHandler}
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5.75 8.625L11.5 14.375L17.25 8.625"
-                  stroke="#FDFEF1"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              // sort icon
+              <img src={DownAngleIcon} alt="" />
             ) : (
-              <svg
-                width="20"
-                height="17"
-                viewBox="0 0 20 17"
-                onClick={BtnHandler}
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.43945 16.4996V10.2773"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M3.43945 6.72222V0.5"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M9.94141 16.5V8.5"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M9.94141 4.94444V0.5"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M16.4434 16.4991V12.0547"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M16.4434 8.5V0.5"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M1 10.2773H5.87722"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M7.50195 4.94434H12.3792"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M14.0059 12.0547H18.8831"
-                  stroke="#FDFEF1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              // down arrow
+              <img src={SortIcon} alt="" />
             )}
           </div>
           {showSort && (
-            <div className="absolute left-0 rounded-b-md px-1 text-sm  w-full  bg-[#0190b1]">
+            <div className="absolute left-0 rounded-b-md px-1 text-sm  w-full select-none  bg-[#0190b1]">
               <h1
-                onClick={handleSortClick("All")}
-                className={`${selectedSort === "All" ? "#F7F131" : ""
-                  } border-b rounde-md border-white text-center  py-1`}
+                // onClick={handleSortClick("All")}
+                className={`${
+                  selectedSort === "All" ? "#F7F131" : ""
+                } border-b rounde-md border-white text-center  py-2`}
               >
                 All
               </h1>
               <h1
-                onClick={handleSortClick("Pending")}
-                className={`${selectedSort === "All" ? "#F7F131" : ""
-                  } border-b rounde-md border-white text-center p-1`}
+                // onClick={handleSortClick("Pending")}
+                className={`${
+                  selectedSort === "All" ? "#F7F131" : ""
+                } border-b rounde-md border-white text-center p-2`}
               >
                 Pending
               </h1>
               <h1
-                onClick={handleSortClick("Cancelled")}
-                className={`${selectedSort === "All" ? "#F7F131" : ""
-                  } border-b rounde-md border-white text-center p-1`}
+                // onClick={handleSortClick("Cancelled")}
+                className={`${
+                  selectedSort === "All" ? "#F7F131" : ""
+                } border-b rounde-md border-white text-center p-2`}
               >
                 Cancelled
               </h1>
               <h1
-                onClick={handleSortClick("Completed")}
-                className={`${selectedSort === "All" ? "#F7F131" : ""
-                  } rounde-md border-white text-center p-1`}
+                // onClick={handleSortClick("Completed")}
+                className={`${
+                  selectedSort === "All" ? "#F7F131" : ""
+                } rounde-md border-white text-center p-2`}
               >
                 Completed
               </h1>
