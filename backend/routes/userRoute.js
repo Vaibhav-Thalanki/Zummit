@@ -50,6 +50,7 @@ const {
   getAllAdminVideos,
 } = require("../controllers/Admin/adminVideoController");
 const { upCommingGroups } = require("../controllers/User/upcomingGroups");
+const { getContent, addVideo, addArticle } = require("../controllers/User/Resources");
 router.get("/Grouptherapy", getGroupTherapySessions);
 router.post("/Grouptherapy", createGroupTherapySession);
 
@@ -85,5 +86,9 @@ router.get("/getByTherapistId/:therapistId", getByTherapistId);
 
 router.get("/appointmentList", appointmentList);
 router.route("/adminvideos").get(getAllAdminVideos);
+
+router.get('/getResources', getContent);
+router.post('/addVideo', addVideo);
+router.post('/addArticle', addArticle);
 
 module.exports = router;
